@@ -108,7 +108,7 @@ int main(void)
 
     Renderer renderer;
 
-    test::ParticleSystem test1;
+    test::LoadModel test1;
 
     /* Loop until the user closes the window */
     glEnable(GL_DEBUG_OUTPUT);
@@ -156,7 +156,7 @@ int main(void)
         
         int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
         double xpos, ypos;
-        if (state == GLFW_PRESS)
+        /*if (state == GLFW_PRESS)
         {            
             while (state == GLFW_PRESS) { 
                 state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT); 
@@ -165,7 +165,7 @@ int main(void)
                 glfwPollEvents();
             }
             test1.AddParticle(float(xpos / ((float)width/2))-1, 1-float(ypos / ((float)height / 2)), e);
-        }
+        }*/
 
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {

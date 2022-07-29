@@ -51,7 +51,7 @@ namespace test {
 				std::cout << "\n ";
 				//continue;
 		}
-		shader = new Shader("res/shaders/Basic.shader");
+		shader = new Shader("res/shaders/Model.shader");
 		shader->Bind();
 		vb = new VertexBuffer(m_Vertex,8 * 4 * 4 * (sizeof(float)));
 		layout.Push<float>(4);
@@ -115,6 +115,6 @@ namespace test {
 		glm::vec3 const& b,
 		glm::vec3 const& c)
 	{
-		return glm::normalize(glm::cross(c -                                                             a, b - a));
+		return glm::normalize(glm::cross(c - a, b - a));
 	}
 }
