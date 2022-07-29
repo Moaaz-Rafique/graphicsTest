@@ -17,6 +17,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_glfw.h"
+#include "tests/ParticleSystem.h"
+#include "tests/LoadModel.h"
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -64,9 +66,9 @@ int main(void)
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
-    
+
     if (glewInit() != GLEW_OK)
-        std::cout << "glewInit() Error!" << std::endl;    
+        std::cout << "glewInit() Error!" << std::endl;
     std::cout << glGetString(GL_VERSION) << std::endl;
 
     const char* glsl_version = "#version 130";
@@ -99,59 +101,29 @@ int main(void)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    float off = 300.0f;
-    float positions[] = {
-        -1.0f * off, -1.0f * off, 0.0f, 0.0f,
-         1.0f * off, -1.0f * off, 1.0f, 0.0f,
-         1.0f * off,  1.0f * off, 1.0f, 1.0f,
-        -1.0f * off,  1.0f * off, 0.0f, 1.0f
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);   
-
-    VertexArray va;
-    VertexBuffer vb(positions, (4 * 4 * sizeof(float)));
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-
-    VertexBufferLayout layout;
-    layout.Push<float>(2);
-    layout.Push<float>(2);
-    va.AddBuffer(vb, layout);
-    
-    IndexBuffer ib(indices, 6);   
-
-
-    Shader shader("res/shaders/Basic.shader");
-    shader.Bind();
-    Texture texture("res/textures/warrior.jpg");
-    texture.Bind(0);
-
-    shader.SetUniform1i("u_Texture", 0);
-    shader.SetUniform4f("u_Color", 1.0f, 0.3f, 0.6f, 1.0f);
-
-    vb.Unbind();
-    ib.Unbind();
 
     Renderer renderer;
 
+    test::ParticleSystem test1;
+
     /* Loop until the user closes the window */
     glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(errorOccurredGL, NULL);    
+    glDebugMessageCallback(errorOccurredGL, NULL);
     glfwSetWindowSizeCallback(window, window_size_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+    
+    Shader shader("res/shaders/Basic.shader");
+    shader.Bind();
+    int e = 0;
     // Our state
     //bool show_demo_window = true;
     glm::vec3 translationA(0.0f, 0.0f, 0.0f);
     glm::vec3 translationB(100.0f, 0.0f, 0.0f);
-
+    float previousTime = glfwGetTime();
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -162,119 +134,38 @@ int main(void)
         ImGui::NewFrame();
 
         /* Render here */
-        renderer.Clear();
-
-        shader.Bind();
+        renderer.Clear(); 
 
         int width, height;
         glfwGetFramebufferSize(window, &width, &height);
-        glm::mat4 proj = glm::ortho(-(float)width/2, (float)width / 2, -(float)height, (float)height, -1.0f, 1.0f);
 
-        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-0.1f, 0.0f, 0.0f));
-        {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
-            glm::mat4 mvp = proj * view * model;
-            shader.SetUniformMat4f("u_MVP", mvp);
-            renderer.Draw(va, ib, shader);
-        }
-        {
-            glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
-            glm::mat4 mvp = proj * view * model;
-            shader.SetUniformMat4f("u_MVP", mvp);
-            renderer.Draw(va, ib, shader);
-        }
+        
+        
+        float newTime = glfwGetTime();
+        test1.OnUpdate(newTime - previousTime);
 
-        //if (show_demo_window)
-            //ImGui::ShowDemoWindow(&show_demo_window);
-        {
+        test1.OnRender();
+        previousTime = newTime;
+        
+        test1.OnImGuiRender(e);
 
-            static bool opt_fullscreen = true;
-            static bool opt_padding = false;
-            static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-            dockspace_flags |= ImGuiDockNodeFlags_PassthruCentralNode;
-
-
-            // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-            // because it would be confusing to have two docking targets within each others.
-            ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-            if (opt_fullscreen)
-            {
-                const ImGuiViewport* viewport = ImGui::GetMainViewport();
-                ImGui::SetNextWindowPos(viewport->WorkPos);
-                ImGui::SetNextWindowSize(viewport->WorkSize);
-                ImGui::SetNextWindowViewport(viewport->ID);
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-                window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-                window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-            }
-            else
-            {
-                dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-            }
-
-            // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
-            // and handle the pass-thru hole, so we ask Begin() to not render a background.
-            if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-                window_flags |= ImGuiWindowFlags_NoBackground;
-
-            // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-            // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
-            // all active windows docked into it will lose their parent and become undocked.
-            // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
-            // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-            if (!opt_padding)
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-            ImGui::Begin("DockSpace Demo", nullptr, window_flags);
-            if (!opt_padding)
-                ImGui::PopStyleVar();
-
-            if (opt_fullscreen)
-                ImGui::PopStyleVar(2);
-
-            // Submit the DockSpace
-            ImGuiIO& io = ImGui::GetIO();
-            if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-            {
-                ImGuiID dockspace_id = ImGui::GetID("My Application");
-                ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-            }
-
-            if (ImGui::BeginMenuBar())
-            {
-                if (ImGui::BeginMenu("Menu"))
-                {
-                    // Disabling fullscreen would allow the window to be moved to the front of other windows,
-                    // which we can't undo at the moment without finer window depth/z control.
-                    ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-                    ImGui::MenuItem("Padding", NULL, &opt_padding);
-                    ImGui::Separator();
-
-                    if (ImGui::MenuItem("Flag: NoSplit", "", (dockspace_flags & ImGuiDockNodeFlags_NoSplit) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoSplit; }
-                    if (ImGui::MenuItem("Flag: NoResize", "", (dockspace_flags & ImGuiDockNodeFlags_NoResize) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoResize; }
-                    if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode; }
-                    if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
-                    //if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
-                    ImGui::Separator();
-                    ImGui::EndMenu();
-                }
-                
-                ImGui::EndMenuBar();
-            }
-
-            ImGui::Begin("Controls");
-            ImGui::Text("Adjust Translate");
-            //ImGui::Text(window);
-            ImGui::DragFloat3("PositionA", &translationA.x, -1.0f, 2.0f);
-            ImGui::DragFloat3("PositionB", &translationB.x, -1.0f, 2.0f);
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-            ImGui::End();
-
-            ImGui::End();
-        }
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        
+        int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+        double xpos, ypos;
+        if (state == GLFW_PRESS)
+        {            
+            while (state == GLFW_PRESS) { 
+                state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT); 
+                glfwGetCursorPos(window, &xpos, &ypos);
+                if (e == 0)break;
+                glfwPollEvents();
+            }
+            test1.AddParticle(float(xpos / ((float)width/2))-1, 1-float(ypos / ((float)height / 2)), e);
+        }
 
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
