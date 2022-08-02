@@ -48,4 +48,5 @@ void main()
 
 	color = v_Color * (0.0f,1.0f,0.0f, 1.0f) * (diffuse + ambient);
 	color = vec4(color.xyz, 1.0f);
+	//color = vec4(1.0f, 1.0f, 1.0f, .10f);
 };

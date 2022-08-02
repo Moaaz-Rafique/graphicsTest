@@ -23,12 +23,17 @@ namespace test {
 		void OnUpdate(float deltaTime);
 		void OnRender();
 		void OnImGuiRender(int& e);
+		void displayLocations();
 	private:
-		static const int noOfVertices = 8; 
+
+		static const int noOfUVertices = 5;
+		static const int noOfVVertices = 5;
+		static const int noOfVertices = noOfUVertices*3*noOfVVertices;
+		static const int noOfIndeces = noOfVertices;//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
 		static const int noOfParametersPerVertex = 4 + 4 + 3;//4 position, 4 color, 3 normals
 		static const int sizeOfVertexBuffer = noOfVertices * noOfParametersPerVertex;
 		float m_Vertex[sizeOfVertexBuffer];
-		unsigned int m_Indices[6*2*3];//6 faces 2 tries per face 3 vertices per tri
+		unsigned int m_Indices[noOfIndeces];
 		VertexArray  va;
 		VertexBuffer* vb;
 		IndexBuffer* ib;

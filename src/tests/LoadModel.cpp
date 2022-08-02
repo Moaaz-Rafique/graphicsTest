@@ -9,19 +9,74 @@
 namespace test {
 	
 	LoadModel::LoadModel()
-		: m_Vertex{
+		: 
+		 m_Vertex{
+
 			0  ,0  ,0,1,	1,1,1,1.0, 1,1,1,
 			1  ,0  ,0,1,	1,1,1,1.0, 1,0,-1,
-			1  ,1  ,0,1,	1,1,1,1.0, 0,-1,0,
-			0  ,1  ,0,1,	1,1,1,1.0, 0,1,-1,
-			0  ,1  ,1,1,	1,1,1,1.0, 1,0,0,
-			0  ,0  ,1,1,	1,1,1,1.0, -1,0,0,
-			1  ,0  ,1,1,	1,1,1,1.0, -1,-1,1,
-			1  ,1  ,1,1,	1,1,1,1.0, 1,0,-1
+			0  ,1  ,0,1,	1,1,1,1.0, 0,0,0
 		},
-		m_Indices{
-			/*
-			*/
+		//m_Indices{
+		//	/*
+		//	*/
+		//	0,1,2,
+		//	0,2,3,
+		//	7,1,6,
+		//	7,1,2,
+		//	7,2,3,
+		//	7,3,4,
+		//	7,4,5,
+		//	7,5,6,
+		//	0,3,4,
+		//	0,4,5,
+		//	0,5,6,
+		//	0,1,6,
+		//	
+		//},
+		rotation { 0.0f, 0.0f, 0.0f },
+		translation{ 0.0f, 0.0f, 0.0f },
+		scale {1,1,1},
+		lightPos { 1.0f, 3.0f, 2.0f, 1.0f },
+		lightIntensity(3.0f)
+	{
+		float cubeVertex[] = {
+			0  ,0  ,0,1,	1,1,1,1.0, 1,1,1,
+			1  ,0  ,0,1,	1,1,1,1.0, 1,1,1,
+			1  ,1  ,0,1,	1,1,1,1.0, 1,1,1,
+			0  ,1  ,0,1,	1,1,1,1.0, 1,1,1,
+			0  ,1  ,1,1,	1,1,1,1.0, 1,1,1,
+			0  ,0  ,1,1,	1,1,1,1.0, 1,1,1,
+			1  ,0  ,1,1,	1,1,1,1.0, 1,1,1,
+			1  ,1  ,1,1,	1,1,1,1.0, 1,1,1
+		};
+		/*for (int i = 0; i < sizeOfVertexBuffer; i += 1) {
+			m_Vertex[i] = cubeVertex[i];
+		}*/
+
+
+		float radius = 2.0f / 10;
+		for (int i = 0; i < noOfVertices; i+=1 * noOfVVertices) {
+			for (int j = 0; j < 3 * noOfVVertices;j++)
+			{
+				int k = noOfParametersPerVertex * (i + j);
+				m_Vertex[k] = radius * sin(2.0 * 3.1415926 * (float)i / (noOfVertices)) * sin(3.1415926 * (float)j / noOfVVertices);
+				m_Vertex[k + 1 ] = radius * cos(2.0 * 3.1415926 * (float)i / (noOfVertices)) * sin(3.1415926 * (float)j / noOfVVertices);
+				m_Vertex[k + 2] = radius *  cos(3.1415926 * (float)j / noOfVVertices);
+				m_Vertex[k + 3] = 1;
+			
+				m_Vertex[k + 4] = abs(m_Vertex[k]);
+				m_Vertex[k + 5] = abs(m_Vertex[k + 1]);
+				m_Vertex[k + 6] = abs(m_Vertex[k + 2]);
+				m_Vertex[k + 7] = 1;
+
+				m_Vertex[k + 8] = (m_Vertex[k]);
+				m_Vertex[k + 9] =( m_Vertex[k + 1]);
+				m_Vertex[k + 10] = (m_Vertex[k + 2]);
+			}
+			
+		}
+		
+		float cubeIndeces[] = {
 			0,1,2,
 			0,2,3,
 			7,1,6,
@@ -34,13 +89,14 @@ namespace test {
 			0,4,5,
 			0,5,6,
 			0,1,6,
-			
-		},
-		rotation { 0.0f, 0.0f, 0.0f },
-		translation { 0.0f, 0.0f, 0.0f },
-		scale {1,1,1}
-	{
+		};
 
+		for (int i = 0; i < noOfIndeces; i++) {
+			m_Indices[i] = i;
+		}
+		//m_Indices[0] = 0;
+		//m_Indices[1] = 1;
+		//m_Indices[2] = 2;
 		//for (int i = 0; i < sizeOfVertexBuffer; i++) {
 		//	if (i % 8 < 3) {
 		//		std::cout << m_Vertex[i]<<", ";
@@ -53,6 +109,8 @@ namespace test {
 		//	else if(i%8<7)
 		//		m_Vertex[i] *= .1;
 		//}
+
+
 		shader = new Shader("res/shaders/Model.shader");
 		shader->Bind();
 		vb = new VertexBuffer(m_Vertex, sizeOfVertexBuffer * (sizeof(float)));
@@ -60,7 +118,9 @@ namespace test {
 		layout.Push<float>(4);
 		layout.Push<float>(3);
 		va.AddBuffer(*vb, layout);
-		ib = new IndexBuffer(m_Indices, 6 * 2 * 3);
+		ib = new IndexBuffer(m_Indices, noOfIndeces);
+
+		displayLocations();
 	}
 
 	LoadModel::~LoadModel()
@@ -100,7 +160,7 @@ namespace test {
 
 	void LoadModel::OnRender()
 	{
-		glClearColor(.50f, .50f, .50f, 1.0f);
+		glClearColor(.150f, .150f, .150f, 1.0f);
 		glClearDepth(1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -145,11 +205,16 @@ namespace test {
 		ImGui::DragFloat("Light Intensity", &lightIntensity, .150f);
 		ImGui::End();
 	}
-	glm::vec3 computeNormal(
-		glm::vec3 const& a,
-		glm::vec3 const& b,
-		glm::vec3 const& c)
+	
+	void LoadModel::displayLocations()
 	{
-		return glm::normalize(glm::cross(c - a, b - a));
+		for (int i = 0; i < sizeOfVertexBuffer; i += noOfParametersPerVertex) {
+			if (i % (noOfParametersPerVertex*3) == 0) {
+				std::cout << "\n(";
+			}
+			std::cout << m_Vertex[i] << ", ";
+			std::cout << m_Vertex[i + 1] << ", ";
+			std::cout << m_Vertex[i + 2] << ")\n(";
+		}
 	}
 }
