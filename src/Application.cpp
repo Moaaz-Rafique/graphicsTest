@@ -10,7 +10,6 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
-#include "Shader.h"
 #include "Texture.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -102,9 +101,8 @@ int main(void)
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    
+    glEnable(GL_DEPTH_TEST);
 
     Renderer renderer;
 
@@ -116,8 +114,6 @@ int main(void)
     glfwSetWindowSizeCallback(window, window_size_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     
-    Shader shader("res/shaders/Basic.shader");
-    shader.Bind();
     int e = 0;
     // Our state
     //bool show_demo_window = true;

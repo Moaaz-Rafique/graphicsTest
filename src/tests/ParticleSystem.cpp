@@ -42,6 +42,11 @@ namespace test {
 		for (int i = 0; i < ATTRACTORS; i++) {
 			attractors[i] = { 0.5, 0.5, 0 };
 		}
+
+
+		shader = new Shader("res/shaders/Basic.shader");
+		shader->Bind();
+
 		vb = new VertexBuffer(nullptr, (PARTICLES + ATTRACTORS) * (4 + 4) * 3 * (sizeof(float)));
 		layout.Push<float>(4);
 		layout.Push<float>(4);

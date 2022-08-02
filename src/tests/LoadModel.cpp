@@ -10,14 +10,14 @@ namespace test {
 	
 	LoadModel::LoadModel()
 		: m_Vertex{
-			0  ,0  ,0,1,	0,0,0,1.0/2,
-			1  ,0  ,0,1,	1,0,0,1.0 / 2,
-			1  ,1  ,0,1,	0,1,0,1.0 / 2,
-			0  ,1  ,0,1,	1,1,0,1.0 / 2,
-			0.2,1.2,1,1,	0,0,1,1.0 / 2,
-			0.2,0.2,1,1,	1,0,1,1.0 / 2,
-			1.2,0.2,1,1,	0,1,1,1.0 / 2,
-			1.2,1.2,1,1,	1,1,1,1.0 / 2
+			0  ,0  ,0,1,	1,1,1,1.0, 1,1,1,
+			1  ,0  ,0,1,	1,1,1,1.0, 1,0,-1,
+			1  ,1  ,0,1,	1,1,1,1.0, 0,-1,0,
+			0  ,1  ,0,1,	1,1,1,1.0, 0,1,-1,
+			0  ,1  ,1,1,	1,1,1,1.0, 1,0,0,
+			0  ,0  ,1,1,	1,1,1,1.0, -1,0,0,
+			1  ,0  ,1,1,	1,1,1,1.0, -1,-1,1,
+			1  ,1  ,1,1,	1,1,1,1.0, 1,0,-1
 		},
 		m_Indices{
 			/*
@@ -41,21 +41,24 @@ namespace test {
 		scale {1,1,1}
 	{
 
-		for (int i = 0; i < 8 * 4 * 4; i++) {
-			if (i % 8 < 3) {
-				std::cout << m_Vertex[i]<<", ";
-				//m_Vertex[i] +=.5;
-				m_Vertex[i] *= 1;
-			}
-			else if(i % 8 == 3)
-				std::cout << "\n ";
-				//continue;
-		}
+		//for (int i = 0; i < sizeOfVertexBuffer; i++) {
+		//	if (i % 8 < 3) {
+		//		std::cout << m_Vertex[i]<<", ";
+		//		//m_Vertex[i] +=.5;
+		//		m_Vertex[i] *= 1;
+		//	}
+		//	else if(i % 8 == 3)
+		//		std::cout << "\n ";
+		//		//continue;
+		//	else if(i%8<7)
+		//		m_Vertex[i] *= .1;
+		//}
 		shader = new Shader("res/shaders/Model.shader");
 		shader->Bind();
-		vb = new VertexBuffer(m_Vertex,8 * 4 * 4 * (sizeof(float)));
+		vb = new VertexBuffer(m_Vertex, sizeOfVertexBuffer * (sizeof(float)));
 		layout.Push<float>(4);
 		layout.Push<float>(4);
+		layout.Push<float>(3);
 		va.AddBuffer(*vb, layout);
 		ib = new IndexBuffer(m_Indices, 6 * 2 * 3);
 	}
@@ -67,6 +70,11 @@ namespace test {
 
 	void LoadModel::OnUpdate(float deltaTime)
 	{
+		//animate rotation
+		for (int i = 0; i < 3; i++) {
+			rotation[i] += .01;
+		}
+
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1280.0f/ 960, 0.1f, 100.0f);
 		glm::mat4 viewTranslate = glm::translate(
 			glm::lookAt(
@@ -92,14 +100,39 @@ namespace test {
 
 	void LoadModel::OnRender()
 	{
-		glClearColor(.2f, .3f, .8f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(.50f, .50f, .50f, 1.0f);
+		glClearDepth(1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+		GLfloat mat_shininess[] = { 50.0 };
+		GLfloat light_position[] = { 10.0, 10.0, 1.0, 0.0 };
+		
+		glShadeModel(GL_SMOOTH);
+
+		glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+		glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+		glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+
+
 		shader->SetUniformMat4f("u_MVP", mvp);
+		shader->SetUniform4f("u_LightPos", lightPos[0], lightPos[1], lightPos[2], lightPos[3]);
 		va.Bind();
 		ib->Bind();
+		
+		//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, {});
+
+		//Add positioned light
+		
+		
 		glBufferSubData(GL_ARRAY_BUFFER, 0, (sizeof(m_Vertex)), m_Vertex);
 
+
+
+
 		glDrawElements(GL_TRIANGLES, ib->GetCount(), GL_UNSIGNED_INT, nullptr);
+		
 	}
 
 	void LoadModel::OnImGuiRender(int& e)
@@ -108,6 +141,8 @@ namespace test {
 		ImGui::DragFloat3("Translate", glm::value_ptr(translation), .01f);
 		ImGui::DragFloat3("Rotation", glm::value_ptr(rotation), .10f);
 		ImGui::DragFloat3("Scale", glm::value_ptr(scale), .10f);
+		ImGui::DragFloat4("Light Position", glm::value_ptr(lightPos), .150f);
+		ImGui::DragFloat("Light Intensity", &lightIntensity, .150f);
 		ImGui::End();
 	}
 	glm::vec3 computeNormal(

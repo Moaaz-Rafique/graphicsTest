@@ -3,6 +3,7 @@
 #include "Test.h"
 #include "../Renderer.h"
 #include "Particle.h"
+#include "../Shader.h"
 
 //struct Particle
 //{
@@ -55,6 +56,7 @@ namespace test {
 
 		float m_Vertex[(PARTICLES + ATTRACTORS) * (4 + 4) * 3]; // 3 + 4 parameters / 3 vertices
 		unsigned int m_Indices[(PARTICLES + ATTRACTORS) * 3];
+		Shader* shader;
 		Particle particles[PARTICLES];
 		void calNewVertexValues(float top = -.01f,	float right = .01f,	float left = .01f,float size = .80f);		
 		void displayLocations();

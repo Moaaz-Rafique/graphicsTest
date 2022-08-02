@@ -74,7 +74,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\Basic.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl">
       <Filter>Header Files</Filter>
     </None>
@@ -484,6 +483,7 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="res\shaders\Model.shader" />
+    <None Include="res\shaders\Basic.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">

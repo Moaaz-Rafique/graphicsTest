@@ -15,7 +15,6 @@ namespace test {
 	{
 		struct Vertex {
 			glm::vec3 pos;
-
 		};
 
 	public:
@@ -25,8 +24,11 @@ namespace test {
 		void OnRender();
 		void OnImGuiRender(int& e);
 	private:
-		float m_Vertex[8 * 4 * 4];
-		unsigned int m_Indices[6*2*3];
+		static const int noOfVertices = 8; 
+		static const int noOfParametersPerVertex = 4 + 4 + 3;//4 position, 4 color, 3 normals
+		static const int sizeOfVertexBuffer = noOfVertices * noOfParametersPerVertex;
+		float m_Vertex[sizeOfVertexBuffer];
+		unsigned int m_Indices[6*2*3];//6 faces 2 tries per face 3 vertices per tri
 		VertexArray  va;
 		VertexBuffer* vb;
 		IndexBuffer* ib;
@@ -37,6 +39,8 @@ namespace test {
 		glm::mat4 model;
 		glm::mat4 mvp;
 		glm::vec3 translation;
+		glm::vec4 lightPos;
+		float lightIntensity;
 		glm::vec3 rotation;
 		glm::vec3 scale;
 	};
