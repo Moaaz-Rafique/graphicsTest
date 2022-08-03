@@ -24,12 +24,13 @@ namespace test {
 		void OnRender();
 		void OnImGuiRender(int& e);
 		void displayLocations();
+		void ToggleButton(const char* str_id, bool* v);
 	private:
-		static const int noOfUVertices = 4;
-		static const int noOfVVertices = 4;
+		static const int noOfParametersPerVertex = 4 + 4 + 3;//4 position, 4 color, 3 normals
+		static const int noOfUVertices = 60;
+		static const int noOfVVertices = 60;
 		static const int noOfVertices = noOfUVertices * 3 * noOfVVertices;
 		static const int noOfIndeces = noOfVertices * 6;//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
-		static const int noOfParametersPerVertex = 4 + 4 + 3;//4 position, 4 color, 3 normals
 		static const int sizeOfVertexBuffer = noOfVertices * noOfParametersPerVertex;
 		float m_Vertex[sizeOfVertexBuffer];
 		unsigned int m_Indices[noOfIndeces];
@@ -47,5 +48,8 @@ namespace test {
 		int lightIntensity;
 		glm::vec3 rotation;
 		glm::vec3 scale;
+
+		int uvDensity = 59;
+		bool wireframeMode=false;
 	};
 }
