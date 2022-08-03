@@ -25,11 +25,10 @@ namespace test {
 		void OnImGuiRender(int& e);
 		void displayLocations();
 	private:
-
-		static const int noOfUVertices = 5;
-		static const int noOfVVertices = 5;
-		static const int noOfVertices = noOfUVertices*3*noOfVVertices;
-		static const int noOfIndeces = noOfVertices;//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
+		static const int noOfUVertices = 4;
+		static const int noOfVVertices = 4;
+		static const int noOfVertices = noOfUVertices * 3 * noOfVVertices;
+		static const int noOfIndeces = noOfVertices * 6;//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
 		static const int noOfParametersPerVertex = 4 + 4 + 3;//4 position, 4 color, 3 normals
 		static const int sizeOfVertexBuffer = noOfVertices * noOfParametersPerVertex;
 		float m_Vertex[sizeOfVertexBuffer];
@@ -45,7 +44,7 @@ namespace test {
 		glm::mat4 mvp;
 		glm::vec3 translation;
 		glm::vec4 lightPos;
-		float lightIntensity;
+		int lightIntensity;
 		glm::vec3 rotation;
 		glm::vec3 scale;
 	};

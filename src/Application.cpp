@@ -103,6 +103,7 @@ int main(void)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    
     glEnable(GL_DEPTH_TEST);
+    /*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
 
     Renderer renderer;
 
@@ -110,6 +111,7 @@ int main(void)
 
     /* Loop until the user closes the window */
     glEnable(GL_DEBUG_OUTPUT);
+
     glDebugMessageCallback(errorOccurredGL, NULL);
     glfwSetWindowSizeCallback(window, window_size_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);

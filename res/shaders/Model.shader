@@ -46,7 +46,7 @@ void main()
 
 	float diffuse = max(normal.x*lightDirection.x + normal.y * lightDirection.y+ normal.z * lightDirection.z, 0.0f);
 
-	color = v_Color * (0.0f,1.0f,0.0f, 1.0f) * (diffuse + ambient);
-	color = vec4(color.xyz, 1.0f);
+	color = v_Color*(0.0f, 1.0f, 0.0f, 1.0f)* (diffuse + ambient);
+	color = vec4(color.xyz, v_Color.w);
 	//color = vec4(1.0f, 1.0f, 1.0f, .10f);
 };
