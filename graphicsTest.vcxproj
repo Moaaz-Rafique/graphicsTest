@@ -152,6 +152,7 @@
     <ClCompile Include="src\tests\LoadModel.cpp" />
     <ClCompile Include="src\tests\Particle.cpp" />
     <ClCompile Include="src\tests\ParticleSystem.cpp" />
+    <ClCompile Include="src\tests\Shape.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui.cpp" />
@@ -311,6 +312,8 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\tests\LoadModel.h" />
     <ClInclude Include="src\tests\Particle.h" />
+    <ClInclude Include="src\tests\Shape.h" />
+    <ClInclude Include="src\tests\Sphere.h" />
     <ClInclude Include="src\tests\Test.h" />
     <ClInclude Include="src\tests\ParticleSystem.h" />
     <ClInclude Include="src\Texture.h" />

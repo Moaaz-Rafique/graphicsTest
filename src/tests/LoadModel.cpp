@@ -3,6 +3,7 @@
 #include "imgui/imgui.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/io.hpp>
+#include "Sphere.h"
 
 
 
@@ -10,12 +11,7 @@ namespace test {
 	
 	LoadModel::LoadModel()
 		: 
-		 m_Vertex{
-
-			0  ,0  ,0,1,	1,1,1,1.0, 1,1,1,
-			1  ,0  ,0,1,	1,1,1,1.0, 1,0,-1,
-			0  ,1  ,0,1,	1,1,1,1.0, 0,0,0
-		},
+		
 		//m_Indices{
 		//	/*
 		//	*/
@@ -36,8 +32,7 @@ namespace test {
 		rotation { 3.3f, 0.0f, 0.30f },
 		translation{ 0.0f, 0.0f, 0.0f },
 		scale {1,1,1},
-		lightPos { 1.0f, 3.0f, 2.0f, 1.0f },
-		lightIntensity(3.0f)
+		lightPos { 1.0f, 3.0f, 2.0f, 1.0f }		
 	{
 		float cubeVertex[] = {
 			0  ,0  ,0,1,	1,1,1,1.0, 1,1,1,
@@ -48,74 +43,7 @@ namespace test {
 			0  ,0  ,1,1,	1,1,1,1.0, 1,1,1,
 			1  ,0  ,1,1,	1,1,1,1.0, 1,1,1,
 			1  ,1  ,1,1,	1,1,1,1.0, 1,1,1
-		};
-		/*for (int i = 0; i < sizeOfVertexBuffer; i += 1) {
-			m_Vertex[i] = cubeVertex[i];
-		}*/
-		//{
-		//	int tk = uvDensity * uvDensity * 3;
-		//	int tj = uvDensity;
-		//	float radius = 2.0f / 2;
-		//	for (int i = 0; i < tk + 1; i += 3 * tj) {
-		//		/*int i = 3 * noOfVVertices;
-		//		{*/
-
-		//		for (int j = 0; j < tj+1; j++)
-		//		{
-		//			int k = noOfParametersPerVertex * (i + j);
-		//			//std::cout << k << ", ";
-		//			m_Vertex[k] = radius * sin(2.0 * 3.1415926 * (float)i / (tk)) * sin(3.1415926 * (float)j / (tj));
-		//			m_Vertex[k + 1] = radius * cos(2.0 * 3.1415926 * (float)i / (tk)) * sin(3.1415926 * (float)j / (tj));
-		//			m_Vertex[k + 2] = radius * cos(3.1415926 * (float)j / (tj));
-
-		//			m_Vertex[k + 3] = 1;
-
-		//			/*if (abs(m_Vertex[k]) < .000001)m_Vertex[k] = 0;
-		//			if (abs(m_Vertex[k + 1]) < .000001)m_Vertex[k + 1] = 0;
-		//			if (abs(m_Vertex[k + 2]) < .000001)m_Vertex[k + 2] = 0;*/
-
-		//			m_Vertex[k + 4] = 1;
-		//			m_Vertex[k + 5] = 1;
-		//			m_Vertex[k + 6] = 1;
-		//			m_Vertex[k + 7] = 1;
-
-		//			m_Vertex[k + 8] = (m_Vertex[k]);
-		//			m_Vertex[k + 9] = (m_Vertex[k + 1]);
-		//			m_Vertex[k + 10] = (m_Vertex[k + 2]);
-
-
-		//			if (m_Vertex[k] == 0 && m_Vertex[k + 1] == 0 && m_Vertex[k + 2] == 0)
-		//			{
-		//				std::cout << m_Vertex[k] << ", " << m_Vertex[k + 1] << ", " << m_Vertex[k + 2] << ", " << "\t";
-		//				std::cout << 2.0 * 3.1415926 * (float)i / (tk) << ", " << (float)j / (tj) << "\n";
-		//			}
-
-
-		//		}
-
-		//	}
-		//	int l = tj * 3;
-		//	for (int i = 0; i < tj; i += 1) {
-		//		if (i % l == l - 1)continue;
-		//		{
-		//			m_Indices[i * 6] = i % tk;
-		//			m_Indices[i * 6 + 1] = (1 + i) % tk;
-		//			m_Indices[i * 6 + 2] = (l + i) % tk;
-
-		//			m_Indices[i * 6 + 3] = (1 + i) % tk;
-		//			m_Indices[i * 6 + 4] = (l + 1 + i) % tk;
-		//			m_Indices[i * 6 + 5] = (l + i) % tk;
-		//		}
-
-		//	}
-		//	//for (int i = 0; i < sizeOfVertexBuffer; i+=noOfParametersPerVertex) {
-		//	//	if (m_Vertex[i] == 0 && m_Vertex[i + 1] == 0 && m_Vertex[i + 2] == 0)
-		//	//	{
-		//	//		std::cout <<i<< ": " << m_Vertex[i] << ", " << m_Vertex[i + 1] << ", " << m_Vertex[i + 2] << ", " << "\n";
-		//	//		//std::cout << 2.0 * 3.1415926 * (float)i / (noOfVertices) << ", " << (float)j / (noOfVVertices) << "\n";
-		//	//	}
-		//	//}
-		//}
+		};		
 		float cubeIndeces[] = {
 			0,1,2,
 			0,2,3,
@@ -141,14 +69,12 @@ namespace test {
 			19,13,2
 		};
 
+
 		
-		/*(indeces[j * 6] = j % 3072),
-			(indeces[1 + j * 6] = (1 + j) % 3072),
-			(indeces[2 + j * 6] = (1 * l + j) % 3072),
-			(indeces[3 + j * 6] = (1 + j) % 3072),
-			(indeces[4 + j * 6] = (l + 1 + j) % 3072),
-			(indeces[5 + j * 6] = (l + j) % 3072)*/
-		
+
+
+		//displayLocations();
+
 		shader = new Shader("res/shaders/Model.shader");
 		shader->Bind();
 		vb = new VertexBuffer(m_Vertex, sizeOfVertexBuffer * (sizeof(float)));
@@ -157,8 +83,6 @@ namespace test {
 		layout.Push<float>(3);
 		va.AddBuffer(*vb, layout);
 		ib = new IndexBuffer(m_Indices, noOfIndeces);
-
-		//displayLocations();
 	}
 
 	LoadModel::~LoadModel()
@@ -175,68 +99,34 @@ namespace test {
 		for (int i = 0; i < sizeOfVertexBuffer; i += 1) {
 			m_Vertex[i] = 0;
 		}
+
+		int currentVertexStartPointer = 0;
+		int currentIndexStartPointer = 0;
+
+		for (int i = 0; i < currentShapePointer;i++) {
+			float extras[] = { 1,1,1,1 };
+			try {
+				shapes[i]->addToVertexBuffer(currentIndexStartPointer, sizeOfVertexBuffer, currentIndexStartPointer, noOfIndeces, m_Vertex, m_Indices, extras);
+
+			}
+			catch (std::string e) {
+				std::cout << e << "\n";
+			}
+			currentVertexStartPointer += shapes[i]->getTotalVertexCount();
+			currentIndexStartPointer += shapes[i]->getTotalIndexCount();
+
+		}
+
 		//animate rotation
-		if (lightIntensity > 3){
+		if (animate) {
 			for (int i = 0; i < 3; i++) {
 				rotation[i] += .01;
 			}
 		}
 
-		int tk = uvDensity * uvDensity * 3;
-		int tj = uvDensity;
-		float radius = 2.0f / 2;
-		for (int i = 0; i < tk; i += 3 * tj) {
-			/*int i = 3 * noOfVVertices;
-			{*/
 
-			for (int j = 0; j < tj+1; j++)
-			{
-				int k = noOfParametersPerVertex * (i + j);
-				//std::cout << k << ", ";
-				m_Vertex[k] = radius * sin(2.0 * 3.1415926 * (float)i / (tk)) * sin(3.1415926 * (float)j / (tj));
-				m_Vertex[k + 1] = radius * cos(2.0 * 3.1415926 * (float)i / (tk)) * sin(3.1415926 * (float)j / (tj));
-				m_Vertex[k + 2] = radius * cos(3.1415926 * (float)j / (tj));
+		
 
-				m_Vertex[k + 3] = 1;
-
-				/*if (abs(m_Vertex[k]) < .000001)m_Vertex[k] = 0;
-				if (abs(m_Vertex[k + 1]) < .000001)m_Vertex[k + 1] = 0;
-				if (abs(m_Vertex[k + 2]) < .000001)m_Vertex[k + 2] = 0;*/
-
-				m_Vertex[k + 4] = 1;
-				m_Vertex[k + 5] = 1;
-				m_Vertex[k + 6] = 1;
-				m_Vertex[k + 7] = 1;
-
-				m_Vertex[k + 8] = (m_Vertex[k]);
-				m_Vertex[k + 9] = (m_Vertex[k + 1]);
-				m_Vertex[k + 10] = (m_Vertex[k + 2]);
-
-
-				if (m_Vertex[k] == 0 && m_Vertex[k + 1] == 0 && m_Vertex[k + 2] == 0)
-				{
-					std::cout << m_Vertex[k] << ", " << m_Vertex[k + 1] << ", " << m_Vertex[k + 2] << ", " << "\t";
-					std::cout << 2.0 * 3.1415926 * (float)i / (tk) << ", " << (float)j / (tj) << "\n";
-				}
-
-
-			}
-
-		}
-		int l = tj * 3;
-		for (int i = 0; i < tk; i += 1) {
-			if (i % l == l - 1)continue;
-			{
-				m_Indices[i * 6] = i % tk;
-				m_Indices[i * 6 + 1] = (1 + i) % tk;
-				m_Indices[i * 6 + 2] = (l + i) % tk;
-
-				m_Indices[i * 6 + 3] = (1 + i) % tk;
-				m_Indices[i * 6 + 4] = (l + 1 + i) % tk;
-				m_Indices[i * 6 + 5] = (l + i) % tk;
-			}
-
-		}
 		/*
 		for (int i = 0; i < sizeOfVertexBuffer; i++) {
 			m_Vertex[i] = 0;
@@ -329,22 +219,35 @@ namespace test {
 		ImGui::DragFloat3("Translate", glm::value_ptr(translation), .01f);
 		ImGui::DragFloat3("Rotation", glm::value_ptr(rotation), .10f);
 		ImGui::DragFloat3("Scale", glm::value_ptr(scale), .10f);
-		ImGui::DragFloat4("Light Position", glm::value_ptr(lightPos), .150f);
-		ImGui::DragInt("Light Intensity", &lightIntensity, 1, 0, noOfVertices / 3);
-		ImGui::DragInt("Sphere Density", &uvDensity, 1, 10, noOfVertices-5);
+		ImGui::DragFloat4("Light Position", glm::value_ptr(lightPos), .150f);		
 		if (ImGui::Button("Display locs"))displayLocations();
 		ToggleButton("Switch to Wireframe mode", &wireframeMode);
-
+		ImGui::Text("Wireframe Toggle");
+		ToggleButton("Animate", &animate);
+		ImGui::Text("Animation Toggle");
+		ImGui::Separator();
+		
+		
+		ImGui::DragInt("Model Density", &uvDensity, 1, 3, 20);
+		ImGui::DragFloat3("New Model Location", glm::value_ptr(newModelLocation), .01f);
+		ImGui::DragFloat("New Model Scale", &newModelScale, .01f);
+		if (ImGui::Button("Add New Sphere Model"))addSphere();
+		ImGui::Value("Total Shapes", currentShapePointer);		
 		ImGui::End();
+
+		
+
+
+
 	}
 	
 	void LoadModel::displayLocations()
 	{
 		std::cout << "\n[";
 
-		for (int i = 3*noOfParametersPerVertex; i < 1 + 6 *noOfParametersPerVertex /*noOfParametersPerVertex * uvDensity * uvDensity * 3*/; i += noOfParametersPerVertex) {
+		for (int i = 0*11; i < 12; i += 11) {
 
-			if (i % (noOfParametersPerVertex*3) == 0) {
+			if (i % (11*3) == 0) {
 				std::cout << "\n";
 			}
 			std::cout << "{'x':" << m_Vertex[i] << ", ";
@@ -353,7 +256,25 @@ namespace test {
 		}
 		std::cout << "]";
 
+		std::cout << "\n[";
+
+		for (int i = 0 * 11; i < 12; i +=1) {
+
+			if (i % (1 * 3) == 0) {
+				std::cout << "\n";
+			}
+			std::cout <<  m_Indices[i] << ", ";
+		}
+		std::cout << "]";
+
 	}
+
+	void LoadModel::addSphere()
+	{
+		if (currentShapePointer > 9)std::cout << "Max Shapes Exceeded";
+		std::cout << "Adding Sphere...\n";
+		shapes[currentShapePointer++] = new Sphere(uvDensity, newModelLocation, newModelScale);
+	}	
 
 	void LoadModel::ToggleButton(const char* str_id, bool* v)
 	{

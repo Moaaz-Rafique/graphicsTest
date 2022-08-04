@@ -8,6 +8,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "../Shader.h"
+#include "Shape.h"
 
 namespace test {
 
@@ -23,15 +24,14 @@ namespace test {
 		void OnUpdate(float deltaTime);
 		void OnRender();
 		void OnImGuiRender(int& e);
+		void ToggleButton(const char* str_id, bool* v);		 
 		void displayLocations();
-		void ToggleButton(const char* str_id, bool* v);
+		void addSphere();
 	private:
-		static const int noOfParametersPerVertex = 4 + 4 + 3;//4 position, 4 color, 3 normals
-		static const int noOfUVertices = 60;
-		static const int noOfVVertices = 60;
-		static const int noOfVertices = noOfUVertices * 3 * noOfVVertices;
+		static const int noOfShapes = 10;
+		static const int noOfVertices = 60*60*3;
 		static const int noOfIndeces = noOfVertices * 6;//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
-		static const int sizeOfVertexBuffer = noOfVertices * noOfParametersPerVertex;
+		static const int sizeOfVertexBuffer = noOfVertices * Shape::noOfParametersPerVertex;
 		float m_Vertex[sizeOfVertexBuffer];
 		unsigned int m_Indices[noOfIndeces];
 		VertexArray  va;
@@ -43,13 +43,23 @@ namespace test {
 		glm::mat4 view;
 		glm::mat4 model;
 		glm::mat4 mvp;
+		
 		glm::vec3 translation;
-		glm::vec4 lightPos;
-		int lightIntensity;
 		glm::vec3 rotation;
-		glm::vec3 scale;
+		glm::vec3 scale;		
 
-		int uvDensity = 59;
-		bool wireframeMode=false;
+		Shape* shapes[noOfShapes];
+		bool wireframeMode=false;		
+		bool animate = true;
+
+		unsigned int currentShapePointer = 0;
+
+		int uvDensity = 10;
+		glm::vec3 newModelLocation;
+		float newModelScale;
+		glm::vec4 lightPos;
+		glm::vec4 m_StartColor;
+
+
 	};
 }
