@@ -28,10 +28,11 @@ namespace test {
 		void displayLocations();
 		void addSphere();
 	private:
-		static const int noOfShapes = 10;
-		static const int noOfVertices = 60*60*3;
-		static const int noOfIndeces = 6 * noOfVertices;//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
-		static const int sizeOfVertexBuffer = noOfVertices * Shape::noOfParametersPerVertex;
+		static const int noOfShapes = 50;
+		static const int maxUVDensity = 60;
+		static const int noOfVertices = 60*60*3*16;
+		static const int noOfIndeces = 6 * (noOfVertices + 6 /*for cube*/);//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
+		static const int sizeOfVertexBuffer = (noOfVertices + 8 /*for cube*/) * Shape::noOfParametersPerVertex;
 		float m_Vertex[sizeOfVertexBuffer];
 		unsigned int m_Indices[noOfIndeces];
 		VertexArray  va;
@@ -58,8 +59,7 @@ namespace test {
 		glm::vec3 newModelLocation;
 		float newModelScale = .5;
 		glm::vec4 lightPos;
-		glm::vec4 newModelColor = {1,1,1,1};
-		std::string myErrors="";
-
+		glm::vec4 newModelColor = {1,1,1,1};		
+		bool overflow = false;
 	};
 }

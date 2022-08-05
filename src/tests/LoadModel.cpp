@@ -65,7 +65,7 @@ namespace test {
 
 	void LoadModel::OnUpdate(float deltaTime)
 	{
-		if (uvDensity > 20)uvDensity = 20;
+		if (uvDensity > maxUVDensity)uvDensity = maxUVDensity;
 		if (currentShapePointer > noOfShapes)uvDensity = noOfShapes;
 		for (int i = 0; i < noOfIndeces; i += 1) {
 			m_Indices[i] = 0;
@@ -84,14 +84,13 @@ namespace test {
 			for (int i = 0; i < currentShapePointer;i++) {
 				float extras[] = { 1,1,1,1 };
 				try {
-					shapes[i]->addToVertexBuffer(currentIndexStartPointer, sizeOfVertexBuffer, currentIndexStartPointer, noOfIndeces, m_Vertex, m_Indices, extras);
-
+					shapes[i]->addToVertexBuffer(currentVertexStartPointer, sizeOfVertexBuffer, currentIndexStartPointer, noOfIndeces, m_Vertex, m_Indices, extras);
+					currentVertexStartPointer += shapes[i]->getTotalVertexCount();
+					currentIndexStartPointer += shapes[i]->getTotalIndexCount();
 				}
 				catch (std::string e) {
 					std::cout << e << "\n";
 				}
-				currentVertexStartPointer += shapes[i]->getTotalVertexCount();
-				currentIndexStartPointer += shapes[i]->getTotalIndexCount();
 			}
 			float cubeVertex[] = {
 						0,0,0,1,	0,0,0,1.0 / 2,1,1,1,
@@ -137,9 +136,11 @@ namespace test {
 				for (int i = 0; i < 8; i++) {
 					int k = i * 11 + currentVertexStartPointer * 11;
 					if (k > sizeOfVertexBuffer+11) { 
-						std::cout << "overflow";
+						//std::cout << k <<" ";
+						overflow = true;
 						break;
 					}
+					overflow = false;
 					m_Vertex[k] = cubeVertex[i*11] - 0.5;
 					m_Vertex[k + 1] = cubeVertex[i*11 + 1] - 0.5;
 					m_Vertex[k + 2] = cubeVertex[i*11 + 2] - 0.5;
@@ -295,7 +296,7 @@ namespace test {
 		ImGui::Separator();
 		
 		//New Model settings
-		ImGui::DragInt("Model Density", &uvDensity, 1, 3, 20);
+		ImGui::DragInt("Model Density", &uvDensity, 1, 3, maxUVDensity);
 		ImGui::ColorEdit4("Model Density", glm::value_ptr(newModelColor));
 		ImGui::DragFloat3("Model Location", glm::value_ptr(newModelLocation), .01f);
 		ImGui::DragFloat("Model Scale", &newModelScale, .01f);
@@ -311,7 +312,14 @@ namespace test {
 		ImGui::Value("Total Shapes", currentShapePointer);
 		if (currentShapePointer >= noOfShapes) {
 			//std::cout << "Max Shapes Exceeded";
-			ImGui::TextColored({1,0,0,0}, "max number of shapes reached");		
+			ImGui::TextColored({1,0,0,1}, "max number of shapes reached");		
+		}
+		if (overflow) {
+			ImGui::TextColored({ 1,0,0,1}, "max number vertices reached");
+		}
+		ImGui::Separator();
+		if (ImGui::Button("Reset Vertices")) {
+			currentShapePointer = 0;
 		}
 		ImGui::End();		
 	}

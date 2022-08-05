@@ -24,21 +24,23 @@ public:
 		this->color = color;
 	}
 	virtual void addToVertexBuffer(int startPosition, int endPosition, int startIndexPosition, int endIndexPosition, float m_Vertex[], unsigned int m_Indices[], float extras[]) {
-		
+		std::cout << "maxSize:" << startPosition << "\n";
 		int tk = uvDensity * uvDensity * 3;
 		int tj = uvDensity;
 		float radius = 2.0f / 2;
 		//float m_Vertex[sizeOfVertexBuffer];
+		int maxSize = 0;
+		int k = 0;
 		for (int i = 0; i < tk; i += 3 * tj) {
 			/*int i = 3 * noOfVVertices;
 			{*/
 
 			for (int j = 0; j < tj*3; j++)
 			{
-				int k = noOfParametersPerVertex * (i + j + startPosition);
+				k= noOfParametersPerVertex * (i + j + startPosition);
 
 				if ((k + 10) > endPosition) {
-					std::cout << "Overflow Vertex\n";
+					std::cout << "maxSize:" << maxSize << ", " << k << ": Overflow Vertex\n";
 					return;
 				}
 				float theta = 2.0 * 3.1415926 * (float)i / (tk);
@@ -71,8 +73,10 @@ public:
 
 
 				//std::cout << k << ", " << m_Vertex[k] << ", " << m_Vertex[k + 1] << ", " << m_Vertex[k + 2] << "\n";
+				maxSize++;				
 			}
 		}
+
 		/*for (int i = 0; i < tk; i++) {
 			vertexArray[startPosition+i] = m_Vertex[i];
 			if ((tk + startPosition) > endPosition) {
@@ -121,7 +125,7 @@ public:
 	}
 
 	int getTotalVertexCount() {
-		return uvDensity * uvDensity * 3 * noOfParametersPerVertex;
+		return uvDensity * uvDensity * 3;
 	}
 	int getTotalIndexCount() {
 		return uvDensity * uvDensity * 3 * 6;
