@@ -11,53 +11,31 @@ namespace test {
 	
 	LoadModel::LoadModel()
 		: 
-		
-		//m_Indices{
-		//	/*
-		//	*/
-		//	0,1,2,
-		//	0,2,3,
-		//	7,1,6,
-		//	7,1,2,
-		//	7,2,3,
-		//	7,3,4,
-		//	7,4,5,
-		//	7,5,6,
-		//	0,3,4,
-		//	0,4,5,
-		//	0,5,6,
-		//	0,1,6,
-		//	
-		//},
-		rotation { 3.3f, 0.0f, 0.30f },
+		 m_Vertex{
+					
+	},
+		m_Indices{
+		/*
+		*/
+		0,1,2,
+		0,2,3,
+		7,1,6,
+		7,1,2,
+		7,2,3,
+		7,3,4,
+		7,4,5,
+		7,5,6,
+		0,3,4,
+		0,4,5,
+		0,5,6,
+		0,1,6,
+
+	}, 
+	rotation { 3.3f, 0.0f, 0.30f },
 		translation{ 0.0f, 0.0f, 0.0f },
 		scale {1,1,1},
 		lightPos { 1.0f, 3.0f, 2.0f, 1.0f }		
-	{
-		float cubeVertex[] = {
-			0  ,0  ,0,1,	1,1,1,1.0, 1,1,1,
-			1  ,0  ,0,1,	1,1,1,1.0, 1,1,1,
-			1  ,1  ,0,1,	1,1,1,1.0, 1,1,1,
-			0  ,1  ,0,1,	1,1,1,1.0, 1,1,1,
-			0  ,1  ,1,1,	1,1,1,1.0, 1,1,1,
-			0  ,0  ,1,1,	1,1,1,1.0, 1,1,1,
-			1  ,0  ,1,1,	1,1,1,1.0, 1,1,1,
-			1  ,1  ,1,1,	1,1,1,1.0, 1,1,1
-		};		
-		float cubeIndeces[] = {
-			0,1,2,
-			0,2,3,
-			7,1,6,
-			7,1,2,
-			7,2,3,
-			7,3,4,
-			7,4,5,
-			7,5,6,
-			0,3,4,
-			0,4,5,
-			0,5,6,
-			0,1,6,
-		};
+	{	
 		int customIndices[noOfIndeces] = {			
 			5,6,7,
 			11,12,13,
@@ -68,11 +46,6 @@ namespace test {
 			19,1,2,
 			19,13,2
 		};
-
-
-		
-
-
 		//displayLocations();
 
 		shader = new Shader("res/shaders/Model.shader");
@@ -92,7 +65,8 @@ namespace test {
 
 	void LoadModel::OnUpdate(float deltaTime)
 	{
-		if (uvDensity >= 60)uvDensity = 59;
+		if (uvDensity > 20)uvDensity = 20;
+		if (currentShapePointer > noOfShapes)uvDensity = noOfShapes;
 		for (int i = 0; i < noOfIndeces; i += 1) {
 			m_Indices[i] = 0;
 		}
@@ -103,18 +77,108 @@ namespace test {
 		int currentVertexStartPointer = 0;
 		int currentIndexStartPointer = 0;
 
-		for (int i = 0; i < currentShapePointer;i++) {
-			float extras[] = { 1,1,1,1 };
-			try {
-				shapes[i]->addToVertexBuffer(currentIndexStartPointer, sizeOfVertexBuffer, currentIndexStartPointer, noOfIndeces, m_Vertex, m_Indices, extras);
 
-			}
-			catch (std::string e) {
-				std::cout << e << "\n";
-			}
-			currentVertexStartPointer += shapes[i]->getTotalVertexCount();
-			currentIndexStartPointer += shapes[i]->getTotalIndexCount();
+		if (currentShapePointer <= noOfShapes) {
 
+
+			for (int i = 0; i < currentShapePointer;i++) {
+				float extras[] = { 1,1,1,1 };
+				try {
+					shapes[i]->addToVertexBuffer(currentIndexStartPointer, sizeOfVertexBuffer, currentIndexStartPointer, noOfIndeces, m_Vertex, m_Indices, extras);
+
+				}
+				catch (std::string e) {
+					std::cout << e << "\n";
+				}
+				currentVertexStartPointer += shapes[i]->getTotalVertexCount();
+				currentIndexStartPointer += shapes[i]->getTotalIndexCount();
+			}
+			float cubeVertex[] = {
+						0,0,0,1,	0,0,0,1.0 / 2,1,1,1,
+						1,0,0,1,	1,0,0,1.0 / 2,1,1,1,
+						1,1,0,1,	0,1,0,1.0 / 2,1,1,1,
+						0,1,0,1,	1,1,0,1.0 / 2,1,1,1,
+						0,1,1,1,	0,0,1,1.0 / 2,1,1,1,
+						0,0,1,1,	1,0,1,1.0 / 2,1,1,1,
+						1,0,1,1,	0,1,1,1.0 / 2,1,1,1,
+						1,1,1,1,	1,1,1,1.0 / 2,1,1,1
+			};
+			float cubeIndeces[] = {
+				0,1,2,
+				0,2,3,
+				7,1,6,
+				7,1,2,
+				7,2,3,
+				7,3,4,
+				7,4,5,
+				7,5,6,
+				0,3,4,
+				0,4,5,
+				0,5,6,
+				0,1,6,
+
+			};
+			/*int k = i * 11 + currentVertexStartPointer;
+			m_Vertex[k] = cubeVertex[i];
+			m_Vertex[k + 1] = cubeVertex[i + 1];
+			m_Vertex[k + 2] = cubeVertex[i + 2];
+			m_Vertex[k + 3] = 1;
+			m_Vertex[k + 4] = 1;
+			m_Vertex[k + 5] = 1;
+			m_Vertex[k + 6] = 1;
+			m_Vertex[k + 7] = 1;
+			m_Vertex[k + 8] = 1;
+			m_Vertex[k + 9] = 1;
+			m_Vertex[k + 10] = 1;*/
+
+			if (currentVertexStartPointer + 88 < sizeOfVertexBuffer) {
+
+
+				for (int i = 0; i < 8; i++) {
+					int k = i * 11 + currentVertexStartPointer * 11;
+					if (k > sizeOfVertexBuffer+11) { 
+						std::cout << "overflow";
+						break;
+					}
+					m_Vertex[k] = cubeVertex[i*11] - 0.5;
+					m_Vertex[k + 1] = cubeVertex[i*11 + 1] - 0.5;
+					m_Vertex[k + 2] = cubeVertex[i*11 + 2] - 0.5;
+					m_Vertex[k + 3] = 1;
+
+					//Apply Scale
+
+					m_Vertex[k] *= newModelScale*2;
+					m_Vertex[k + 1] *= newModelScale*2;
+					m_Vertex[k + 2] *= newModelScale*2;
+
+					//Apply location
+
+					m_Vertex[k] += newModelLocation.x;
+					m_Vertex[k + 1] += newModelLocation.y;
+					m_Vertex[k + 2] += newModelLocation.z;
+
+
+					m_Vertex[k + 4] = newModelColor.r;
+					m_Vertex[k + 5] = newModelColor.g;
+					m_Vertex[k + 6] = newModelColor.b;
+					m_Vertex[k + 7] = newModelColor.a*.5;
+
+					m_Vertex[k + 8] = sin(k);
+					m_Vertex[k + 9] = sin(i);
+					m_Vertex[k + 10] = cos(k);
+
+				}
+				for (int i = 0; i < 36; i++) {
+					m_Indices[i + currentIndexStartPointer] = cubeIndeces[i] + currentVertexStartPointer;
+				}
+			}
+		/*shapes[noOfShapes] = new Sphere(
+			uvDensity,
+			{newModelColor.r,newModelColor.g, newModelColor.b, newModelColor.a},
+			newModelLocation,
+			newModelScale
+		);
+		shapes[noOfShapes]->addToVertexBuffer(currentIndexStartPointer, sizeOfVertexBuffer, currentIndexStartPointer, noOfIndeces, m_Vertex, m_Indices,{});*/
 		}
 
 		//animate rotation
@@ -216,36 +280,47 @@ namespace test {
 	{
 		ImGui::Begin("Model Controls");
 
-		ImGui::DragFloat3("Translate", glm::value_ptr(translation), .01f);
-		ImGui::DragFloat3("Rotation", glm::value_ptr(rotation), .10f);
-		ImGui::DragFloat3("Scale", glm::value_ptr(scale), .10f);
-		ImGui::DragFloat4("Light Position", glm::value_ptr(lightPos), .150f);		
+		//Scene Controls
+
+		{
+			ImGui::DragFloat3("Translate", glm::value_ptr(translation), .01f);
+			ImGui::DragFloat3("Rotation", glm::value_ptr(rotation), .10f);
+			ImGui::DragFloat3("Scale", glm::value_ptr(scale), .10f);
+			ImGui::DragFloat4("Light Position", glm::value_ptr(lightPos), .150f);		
+			ToggleButton("Switch to Wireframe mode", &wireframeMode);
+			ToggleButton("Animate", &animate);
+			ImGui::Separator();
+		}
 		if (ImGui::Button("Display locs"))displayLocations();
-		ToggleButton("Switch to Wireframe mode", &wireframeMode);
-		ImGui::Text("Wireframe Toggle");
-		ToggleButton("Animate", &animate);
-		ImGui::Text("Animation Toggle");
 		ImGui::Separator();
 		
-		
+		//New Model settings
 		ImGui::DragInt("Model Density", &uvDensity, 1, 3, 20);
-		ImGui::DragFloat3("New Model Location", glm::value_ptr(newModelLocation), .01f);
-		ImGui::DragFloat("New Model Scale", &newModelScale, .01f);
-		if (ImGui::Button("Add New Sphere Model"))addSphere();
-		ImGui::Value("Total Shapes", currentShapePointer);		
-		ImGui::End();
-
+		ImGui::ColorEdit4("Model Density", glm::value_ptr(newModelColor));
+		ImGui::DragFloat3("Model Location", glm::value_ptr(newModelLocation), .01f);
+		ImGui::DragFloat("Model Scale", &newModelScale, .01f);
 		
+		ImGui::Separator();
 
-
-
+		if (ImGui::Button("Add Sphere at Cube location"))addSphere();
+		
+		
+		
+		ImGui::Separator();
+		
+		ImGui::Value("Total Shapes", currentShapePointer);
+		if (currentShapePointer >= noOfShapes) {
+			//std::cout << "Max Shapes Exceeded";
+			ImGui::TextColored({1,0,0,0}, "max number of shapes reached");		
+		}
+		ImGui::End();		
 	}
 	
 	void LoadModel::displayLocations()
 	{
-		std::cout << "\n[";
+		/*std::cout << "\n[";
 
-		for (int i = 0*11; i < 12; i += 11) {
+		for (int i = 1*11; i < 9*11+1; i += 11) {
 
 			if (i % (11*3) == 0) {
 				std::cout << "\n";
@@ -258,22 +333,36 @@ namespace test {
 
 		std::cout << "\n[";
 
-		for (int i = 0 * 11; i < 12; i +=1) {
+		for (int i = 1 * 6; i < 8*6+1; i +=1) {
 
 			if (i % (1 * 3) == 0) {
 				std::cout << "\n";
 			}
 			std::cout <<  m_Indices[i] << ", ";
 		}
-		std::cout << "]";
+		std::cout << "]";*/
+
+		for (int i = 0; i < 8; i++) {			
+				std::cout << m_Vertex[i*11 + uvDensity * 11] << ", ";
+				std::cout << m_Vertex[i*11 + 1 + uvDensity * 11] << ", ";
+				std::cout<<m_Vertex[i*11 + 2 + uvDensity * 11]<<"\n ";
+		}
 
 	}
 
 	void LoadModel::addSphere()
 	{
-		if (currentShapePointer > 9)std::cout << "Max Shapes Exceeded";
+		if (currentShapePointer >= noOfShapes) {
+			std::cout << "Max Shapes Exceeded";
+			return;
+		}
 		std::cout << "Adding Sphere...\n";
-		shapes[currentShapePointer++] = new Sphere(uvDensity, newModelLocation, newModelScale);
+		shapes[currentShapePointer++] = new Sphere(
+			uvDensity, 
+			newModelColor,
+			newModelLocation,
+			newModelScale
+		);
 	}	
 
 	void LoadModel::ToggleButton(const char* str_id, bool* v)
@@ -295,5 +384,6 @@ namespace test {
 
 		draw_list->AddRectFilled(p, ImVec2(p.x + width, p.y + height), col_bg, height * 0.5f);
 		draw_list->AddCircleFilled(ImVec2(*v ? (p.x + width - radius) : (p.x + radius), p.y + radius), radius - 1.5f, IM_COL32(255, 255, 255, 255));
+		draw_list->AddText(ImVec2(p.x + width+5, p.y+2.5), IM_COL32_WHITE, str_id);
 	}
 }

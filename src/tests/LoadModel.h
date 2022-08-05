@@ -30,7 +30,7 @@ namespace test {
 	private:
 		static const int noOfShapes = 10;
 		static const int noOfVertices = 60*60*3;
-		static const int noOfIndeces = noOfVertices * 6;//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
+		static const int noOfIndeces = 6 * noOfVertices;//6 * 2 * 3;//6*2*3 6 faces 2 tries per face 3 vertices per tri
 		static const int sizeOfVertexBuffer = noOfVertices * Shape::noOfParametersPerVertex;
 		float m_Vertex[sizeOfVertexBuffer];
 		unsigned int m_Indices[noOfIndeces];
@@ -48,7 +48,7 @@ namespace test {
 		glm::vec3 rotation;
 		glm::vec3 scale;		
 
-		Shape* shapes[noOfShapes];
+		Shape* shapes[noOfShapes + 1];
 		bool wireframeMode=false;		
 		bool animate = true;
 
@@ -56,10 +56,10 @@ namespace test {
 
 		int uvDensity = 10;
 		glm::vec3 newModelLocation;
-		float newModelScale;
+		float newModelScale = .5;
 		glm::vec4 lightPos;
-		glm::vec4 m_StartColor;
-
+		glm::vec4 newModelColor = {1,1,1,1};
+		std::string myErrors="";
 
 	};
 }

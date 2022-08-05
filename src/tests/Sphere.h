@@ -24,6 +24,7 @@ public:
 		this->color = color;
 	}
 	virtual void addToVertexBuffer(int startPosition, int endPosition, int startIndexPosition, int endIndexPosition, float m_Vertex[], unsigned int m_Indices[], float extras[]) {
+		
 		int tk = uvDensity * uvDensity * 3;
 		int tj = uvDensity;
 		float radius = 2.0f / 2;
@@ -32,7 +33,7 @@ public:
 			/*int i = 3 * noOfVVertices;
 			{*/
 
-			for (int j = 0; j < tj+1; j++)
+			for (int j = 0; j < tj*3; j++)
 			{
 				int k = noOfParametersPerVertex * (i + j + startPosition);
 
@@ -41,7 +42,7 @@ public:
 					return;
 				}
 				float theta = 2.0 * 3.1415926 * (float)i / (tk);
-				float phi= 3.1415926 * (float)j / (tj);
+				float phi= 3.1415926 * (float)j / (3*tj-1);
 				m_Vertex[k] = radius * sin(theta) * sin(phi);
 				m_Vertex[k + 1] = radius * cos(theta) * sin(phi);
 				m_Vertex[k + 2] = radius * cos(phi);
