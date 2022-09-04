@@ -312,8 +312,11 @@
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\tests\Grid.h" />
     <ClInclude Include="src\tests\LoadModel.h" />
+    <ClInclude Include="src\tests\Noise.h" />
     <ClInclude Include="src\tests\Particle.h" />
+    <ClInclude Include="src\tests\RandomShape.h" />
     <ClInclude Include="src\tests\Shape.h" />
     <ClInclude Include="src\tests\Sphere.h" />
     <ClInclude Include="src\tests\Test.h" />

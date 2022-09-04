@@ -27,6 +27,8 @@ namespace test {
 		void ToggleButton(const char* str_id, bool* v);		 
 		void displayLocations();
 		void addSphere();
+		void addRandomShape(int vertices);
+		void addGrid(int vertices);
 	private:
 		static const int noOfShapes = 50;
 		static const int maxUVDensity = 60;
@@ -50,12 +52,12 @@ namespace test {
 		glm::vec3 scale;		
 
 		Shape* shapes[noOfShapes + 1];
-		bool wireframeMode=false;		
-		bool animate = true;
+		bool wireframeMode=true;		
+		bool animate = false;
 
 		unsigned int currentShapePointer = 0;
 
-		int uvDensity = 10;
+		int uvDensity = 3;
 		glm::vec3 newModelLocation;
 		float newModelScale = .5;
 		glm::vec4 lightPos;

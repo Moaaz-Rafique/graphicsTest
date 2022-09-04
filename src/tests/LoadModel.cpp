@@ -4,6 +4,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/io.hpp>
 #include "Sphere.h"
+#include "RandomShape.h"
+#include "Grid.h"
 
 
 
@@ -267,7 +269,8 @@ namespace test {
 		if (wireframeMode) {
 			glDisable(GL_DEPTH_TEST);
 			glLineWidth(2.0f);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPointSize(5.0f);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 			glDrawElements(GL_TRIANGLES, ib->GetCount(), GL_UNSIGNED_INT, nullptr);
 		}
 		else {
@@ -296,7 +299,7 @@ namespace test {
 		ImGui::Separator();
 		
 		//New Model settings
-		ImGui::DragInt("Model Density", &uvDensity, 1, 3, maxUVDensity);
+		ImGui::DragInt("Model Density", &uvDensity, 1, 2, maxUVDensity);
 		ImGui::ColorEdit4("Model Density", glm::value_ptr(newModelColor));
 		ImGui::DragFloat3("Model Location", glm::value_ptr(newModelLocation), .01f);
 		ImGui::DragFloat("Model Scale", &newModelScale, .01f);
@@ -304,6 +307,8 @@ namespace test {
 		ImGui::Separator();
 
 		if (ImGui::Button("Add Sphere at Cube location"))addSphere();
+		if (ImGui::Button("Add Random Shape at Cube location"))addRandomShape(uvDensity);
+		if (ImGui::Button("Add Grid Shape at Cube location"))addGrid(uvDensity);
 		
 		
 		
@@ -341,21 +346,21 @@ namespace test {
 
 		std::cout << "\n[";
 
-		for (int i = 1 * 6; i < 8*6+1; i +=1) {
+		*/
+		for (int i = 0; i < uvDensity*uvDensity*6; i +=1) {
 
 			if (i % (1 * 3) == 0) {
 				std::cout << "\n";
 			}
 			std::cout <<  m_Indices[i] << ", ";
 		}
-		std::cout << "]";*/
+		std::cout << "]";
 
-		for (int i = 0; i < 8; i++) {			
-				std::cout << m_Vertex[i*11 + uvDensity * 11] << ", ";
-				std::cout << m_Vertex[i*11 + 1 + uvDensity * 11] << ", ";
-				std::cout<<m_Vertex[i*11 + 2 + uvDensity * 11]<<"\n ";
+		for (int i = 0; i < 10*10; i++) {			
+				std::cout << m_Vertex[i*11 + uvDensity * 0] << ", ";
+				std::cout << m_Vertex[i*11 + 1 + uvDensity * 0] << ", ";
+				std::cout<<i<<"\n ";
 		}
-
 	}
 
 	void LoadModel::addSphere()
@@ -372,6 +377,36 @@ namespace test {
 			newModelScale
 		);
 	}	
+
+	void LoadModel::addRandomShape(int vertices)
+	{
+		if (currentShapePointer >= noOfShapes) {
+			std::cout << "Max Shapes Exceeded";
+			return;
+		}
+		std::cout << "Adding Random Shape...\n";
+		shapes[currentShapePointer++] = new RandomShape(
+			vertices,
+			newModelColor,
+			newModelLocation,
+			newModelScale
+		);
+	}
+	void LoadModel::addGrid(int vertices)
+	{
+		if (currentShapePointer >= noOfShapes) {
+			std::cout << "Max Shapes Exceeded";
+			return;
+		}
+		std::cout << "Adding Random Shape...\n";
+		shapes[currentShapePointer++] = new Grid(
+			vertices,
+			newModelColor,
+			newModelLocation,
+			newModelScale
+		);
+	}
+
 
 	void LoadModel::ToggleButton(const char* str_id, bool* v)
 	{

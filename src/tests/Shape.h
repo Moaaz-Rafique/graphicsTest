@@ -7,6 +7,4 @@ public:
 	virtual void addToVertexBuffer(int startPosition, int endPosition, int startIndexPosition, int endIndexPosition, float vertexArray[], unsigned int indexArray[], float extras[]) = 0;
 	virtual int getTotalVertexCount() = 0;
 	virtual int getTotalIndexCount() = 0;
-
-
 };
