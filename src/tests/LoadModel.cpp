@@ -268,9 +268,9 @@ namespace test {
 
 		if (wireframeMode) {
 			glDisable(GL_DEPTH_TEST);
-			glLineWidth(2.0f);
+			//glLineWidth(2.0f);
 			glPointSize(5.0f);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glDrawElements(GL_TRIANGLES, ib->GetCount(), GL_UNSIGNED_INT, nullptr);
 		}
 		else {
