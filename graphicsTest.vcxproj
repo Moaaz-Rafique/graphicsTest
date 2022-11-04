@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\tests\LoadImage.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
@@ -309,6 +310,7 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\tests\LoadImage.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
@@ -619,10 +621,13 @@
     <ClInclude Include="src\VertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\Fiverr\logo_90_4_100x100.png" />
+    <Image Include="..\..\fyp-test-app\making_ply\test_images\img_0_0_0.jpg" />
     <Image Include="res\textures\image.png" />
     <Image Include="res\textures\sdk.png" />
     <Image Include="res\textures\sword1.png" />
     <Image Include="res\textures\warrior.jpg" />
+    <Image Include="res\textures\abc.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\shaders\Source.txt" />

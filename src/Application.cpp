@@ -18,6 +18,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "tests/ParticleSystem.h"
 #include "tests/LoadModel.h"
+#include "tests/LoadImage.h"
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -108,7 +109,7 @@ int main(void)
 
     Renderer renderer;
 
-    test::LoadModel test1;
+    test::LoadImage test1;
 
     /* Loop until the user closes the window */
     glEnable(GL_DEBUG_OUTPUT);
@@ -146,7 +147,7 @@ int main(void)
         test1.OnRender();
         previousTime = newTime;
         
-        test1.OnImGuiRender(e);
+        test1.OnImGuiRender();
 
 
         ImGui::Render();

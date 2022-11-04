@@ -75,6 +75,9 @@
     <ClCompile Include="src\vendor\imgui\imgui_demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\LoadImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1413,6 +1416,9 @@
     <ClInclude Include="src\tests\Noise.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\LoadImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\image.png">
@@ -1425,6 +1431,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\textures\sdk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\fyp-test-app\making_ply\test_images\img_0_0_0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\abc.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\Fiverr\logo_90_4_100x100.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
