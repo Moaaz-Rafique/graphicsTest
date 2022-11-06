@@ -1419,6 +1419,9 @@
     <ClInclude Include="src\tests\LoadImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\GridImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\image.png">
@@ -1440,6 +1443,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\..\Fiverr\logo_90_4_100x100.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\logo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\sine.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

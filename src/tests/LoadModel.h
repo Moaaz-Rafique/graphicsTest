@@ -29,6 +29,7 @@ namespace test {
 		void addSphere();
 		void addRandomShape(int vertices);
 		void addGrid(int vertices);
+		void addGridImage(int vertices);
 	private:
 		static const int noOfShapes = 50;
 		static const int maxUVDensity = 60;
@@ -63,5 +64,6 @@ namespace test {
 		glm::vec4 lightPos;
 		glm::vec4 newModelColor = {1,1,1,1};		
 		bool overflow = false;
+		char imagePath[100] = "res/textures/sine.png";
 	};
 }

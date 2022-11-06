@@ -310,6 +310,7 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\tests\GridImage.h" />
     <ClInclude Include="src\tests\LoadImage.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
@@ -624,7 +625,9 @@
     <Image Include="..\..\Fiverr\logo_90_4_100x100.png" />
     <Image Include="..\..\fyp-test-app\making_ply\test_images\img_0_0_0.jpg" />
     <Image Include="res\textures\image.png" />
+    <Image Include="res\textures\logo.png" />
     <Image Include="res\textures\sdk.png" />
+    <Image Include="res\textures\sine.png" />
     <Image Include="res\textures\sword1.png" />
     <Image Include="res\textures\warrior.jpg" />
     <Image Include="res\textures\abc.jpg" />

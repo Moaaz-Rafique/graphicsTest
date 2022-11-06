@@ -109,7 +109,7 @@ int main(void)
 
     Renderer renderer;
 
-    test::LoadImage test1;
+    test::LoadModel test1;
 
     /* Loop until the user closes the window */
     glEnable(GL_DEBUG_OUTPUT);
@@ -147,7 +147,7 @@ int main(void)
         test1.OnRender();
         previousTime = newTime;
         
-        test1.OnImGuiRender();
+        test1.OnImGuiRender(e);
 
 
         ImGui::Render();

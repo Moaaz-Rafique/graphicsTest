@@ -6,6 +6,7 @@
 #include "Sphere.h"
 #include "RandomShape.h"
 #include "Grid.h"
+#include "GridImage.h"
 
 
 
@@ -309,6 +310,8 @@ namespace test {
 		if (ImGui::Button("Add Sphere at Cube location"))addSphere();
 		if (ImGui::Button("Add Random Shape at Cube location"))addRandomShape(uvDensity);
 		if (ImGui::Button("Add Grid Shape at Cube location"))addGrid(uvDensity);
+		ImGui::InputText("Image Path", imagePath, 100);
+		if (ImGui::Button("Add Image Shape at Cube location"))addGridImage(100);
 		
 		
 		
@@ -406,7 +409,22 @@ namespace test {
 			newModelScale
 		);
 	}
+	void LoadModel::addGridImage(int vertices)
+	{
+		if (currentShapePointer >= noOfShapes) {
+			std::cout << "Max Shapes Exceeded";
+			return;
+		}
+		std::cout << "Adding Random Shape...\n";
+		shapes[currentShapePointer++] = new GridImage(
+			uvDensity,
+			newModelColor,
+			newModelLocation,
+			newModelScale,
+			imagePath
 
+		);
+	}
 
 	void LoadModel::ToggleButton(const char* str_id, bool* v)
 	{
