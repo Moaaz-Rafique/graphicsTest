@@ -9,6 +9,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "../Shader.h"
 #include "Shape.h"
+#include <GLFW/glfw3.h>
 
 namespace test {
 
@@ -23,7 +24,7 @@ namespace test {
 		~LoadModel();
 		void OnUpdate(float deltaTime);
 		void OnRender();
-		void OnImGuiRender(int& e);
+		void OnImGuiRender(int& e, GLFWwindow* window);
 		void ToggleButton(const char* str_id, bool* v);		 
 		void displayLocations();
 		void addSphere();

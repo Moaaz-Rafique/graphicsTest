@@ -37,6 +37,7 @@ private:
 	int loadImage(const char* imagePath) {
 		try
 		{
+			printf(imagePath);
 			this->img = stbi_load(imagePath, &this->width, &this->height, &this->channels, 4);
 			if (this->img == NULL) {
 				printf("Error in loading the image\n");
@@ -72,7 +73,7 @@ public:
 	}
 	GridImage(int uvDensity, glm::vec4 color, glm::vec3 loc, float scale, const char* imagePath) {
 		if (uvDensity > 60)uvDensity = 60;
-		this->uvDensity = uvDensity;
+		this->uvDensity = uvDensity*2;
 		this->loc = loc;
 		this->scale = scale;
 		this->color = color;
@@ -101,7 +102,7 @@ public:
 
 				m_Vertex[k] = radius * i;
 				m_Vertex[k + 1] = radius * j;
-				m_Vertex[k + 2] = radius * int(a)/16;
+				m_Vertex[k + 2] = radius * (int(r) + int(g) + int(b)) / (16 * 3);
 				m_Vertex[k + 3] = 1;
 
 

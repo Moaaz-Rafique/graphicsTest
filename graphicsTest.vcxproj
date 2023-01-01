@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\PlatformUtils\FileDialogs.cpp" />
     <ClCompile Include="src\tests\LoadImage.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
@@ -310,6 +311,7 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\PlatformUtils\FileDialogs.h" />
     <ClInclude Include="src\tests\GridImage.h" />
     <ClInclude Include="src\tests\LoadImage.h" />
     <ClInclude Include="src\IndexBuffer.h" />

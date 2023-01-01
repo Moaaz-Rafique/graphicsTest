@@ -78,6 +78,9 @@
     <ClCompile Include="src\tests\LoadImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PlatformUtils\FileDialogs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1420,6 +1423,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\tests\GridImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlatformUtils\FileDialogs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

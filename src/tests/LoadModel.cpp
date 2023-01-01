@@ -7,7 +7,7 @@
 #include "RandomShape.h"
 #include "Grid.h"
 #include "GridImage.h"
-
+#include "../PlatformUtils/FileDialogs.h"
 
 
 namespace test {
@@ -266,22 +266,22 @@ namespace test {
 		//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, {});
 
 		//Add positioned light
+			//glLineWidth(2.0f);
 
 		if (wireframeMode) {
 			glDisable(GL_DEPTH_TEST);
-			//glLineWidth(2.0f);
 			glPointSize(5.0f);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glDrawElements(GL_TRIANGLES, ib->GetCount(), GL_UNSIGNED_INT, nullptr);
 		}
 		else {
 			glEnable(GL_DEPTH_TEST);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 			glDrawElements(GL_TRIANGLES, ib->GetCount(), GL_UNSIGNED_INT, nullptr);
 		}
 	}
 
-	void LoadModel::OnImGuiRender(int& e)
+	void LoadModel::OnImGuiRender(int& e, GLFWwindow* window)
 	{
 		ImGui::Begin("Model Controls");
 
@@ -329,6 +329,30 @@ namespace test {
 		if (ImGui::Button("Reset Vertices")) {
 			currentShapePointer = 0;
 		}
+
+		if (ImGui::BeginMenu("File"))
+		{
+			// Disabling fullscreen would allow the window to be moved to the front of other windows, 
+			// which we can't undo at the moment without finer window depth/z control.
+			//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);1
+			if (ImGui::MenuItem("Open...", "Ctrl+O")) {
+				std::string filepath = customUtils::FileDialogs::OpenFile("Load Images\0*.png\0*.jpg\0*.jpeg\0", window);
+				if (!filepath.empty()){
+
+
+					char* char_array = new char[filepath.length() + 1];
+
+					// copying the contents of the
+					// string to char array
+					strcpy_s(imagePath, filepath.c_str());
+					//imagePath = char_arr;
+				}
+			}
+			
+			ImGui::EndMenu();
+		}
+
+
 		ImGui::End();		
 	}
 	
@@ -395,6 +419,7 @@ namespace test {
 			newModelScale
 		);
 	}
+
 	void LoadModel::addGrid(int vertices)
 	{
 		if (currentShapePointer >= noOfShapes) {
@@ -409,6 +434,7 @@ namespace test {
 			newModelScale
 		);
 	}
+	
 	void LoadModel::addGridImage(int vertices)
 	{
 		if (currentShapePointer >= noOfShapes) {
@@ -447,4 +473,5 @@ namespace test {
 		draw_list->AddCircleFilled(ImVec2(*v ? (p.x + width - radius) : (p.x + radius), p.y + radius), radius - 1.5f, IM_COL32(255, 255, 255, 255));
 		draw_list->AddText(ImVec2(p.x + width+5, p.y+2.5), IM_COL32_WHITE, str_id);
 	}
+
 }

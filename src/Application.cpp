@@ -147,7 +147,7 @@ int main(void)
         test1.OnRender();
         previousTime = newTime;
         
-        test1.OnImGuiRender(e);
+        test1.OnImGuiRender(e, window);
 
 
         ImGui::Render();
